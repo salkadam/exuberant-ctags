@@ -40,8 +40,8 @@ static void installParrotRegex (const langType language)
 {
     addTagRegex (language, "^\\.sub[ \t]*'([" ALNUM "]+)'([ \t]*:[" ALNUM "]+(\\((('[" ALNUM "]+')*[ \t,_]*)*\\))*)*",
             "\\1", "s,subroutine,subroutines", NULL);
-    addTagRegex (language, "rule[ \t]*([" ALNUM "]+)[ \t]*(:\"*[" ALNUM "+-/%^<>=]+\"*)*", "\\1", "r,rule,rules", NULL);
-    addTagRegex (language, "token[ \t]*([" ALNUM "]+)[ \t]*(:\"*[" ALNUM "+-/%^<>=]+\"*)*", "\\1", "t,token,tokens", NULL);
+    addTagRegex (language, "^rule[ \t]*([" ALNUM "]+)[ \t]*(:\"*[" ALNUM "+-/%^<>=]+\"*)*", "\\1", "r,rule,rules", NULL);
+    addTagRegex (language, "^token[ \t]*([" ALNUM "]+)[ \t]*(:\"*[" ALNUM "+-/%^<>=]+\"*)*", "\\1", "t,token,tokens", NULL);
 }
 
 extern parserDefinition* ParrotParser (void)
