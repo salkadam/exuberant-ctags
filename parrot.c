@@ -18,6 +18,7 @@
 /*
 *   DATA DEFINITIONS
 */
+#if 0
 typedef enum {
     K_NONE = -1,
     K_SUBROUTINE,
@@ -30,23 +31,27 @@ static kindOption ParrotKinds [] = {
 	{TRUE, 'r', "rule", "rules"},
 	{TRUE, 't', "token", "tokens"}
 };
+#endif
 
-#define ALNUM "a-zA-Z0-9_"
+#define ALNUM "a-zA-Z0-9"
+#define PUNCT "!#$%&*+,.\\/:;<=>?@^_`\\{\\|\\}~\\-"
 
 /*
- * Bellow regular expression is not clearly to read and not complete.
+ * Bellow regular expression is not clearly to read and not completed.
  */
 static void installParrotRegex (const langType language)
 {
-    addTagRegex (language, "^\\.sub[ \t]*'([" ALNUM "]+)'([ \t]*:[" ALNUM "]+(\\((('[" ALNUM "]+')*[ \t,_]*)*\\))*)*",
-            "\\1", "s,subroutine,subroutines", NULL);
-    addTagRegex (language, "^rule[ \t]*([" ALNUM "]+)[ \t]*(:\"*[" ALNUM "+-/%^<>=]+\"*)*", "\\1", "r,rule,rules", NULL);
-    addTagRegex (language, "^token[ \t]*([" ALNUM "]+)[ \t]*(:\"*[" ALNUM "+-/%^<>=]+\"*)*", "\\1", "t,token,tokens", NULL);
+    addTagRegex (language, "^\\.sub[ \\t]*'?(infix:)*([" ALNUM "" PUNCT "]+)'?[ \\t]*.*",
+            "\\2", "s,subroutine,subroutines", NULL);
+    addTagRegex (language, "^rule[ \\t]*([" ALNUM "_]+)[ \\t]*(:\"[" ALNUM "" PUNCT "]+\"*)*",
+            "\\1", "r,rule,rules", NULL);
+    addTagRegex (language, "^token[ \\t]*([" ALNUM "_]+)[ \\t]*(:\"[" ALNUM "" PUNCT "]+\"*)*",
+            "\\1", "t,token,tokens", NULL);
 }
 
 extern parserDefinition* ParrotParser (void)
 {
-	 static const char *const extensions [] = { "pir", "pg", "pasm", "nqp", NULL };
+	 static const char *const extensions [] = { "pir", "pg", "pasm", "nqp", "pmc", NULL };
 	 parserDefinition* def = parserNew ("Parrot");
      def->extensions = extensions;
      def->initialize = installParrotRegex;
